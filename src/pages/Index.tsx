@@ -8,6 +8,7 @@ import AdmissionsSection from "@/components/AdmissionsSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import StudentInquiryPopup from "@/components/StudentInquiryPopup";
 
 const Index = () => (
   <>
@@ -21,6 +22,7 @@ const Index = () => (
     <ContactSection />
     <Footer />
     <WhatsAppButton />
+    <StudentInquiryPopup />
   </>
 );
 
