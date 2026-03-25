@@ -9,9 +9,13 @@ import ContactSection from "@/components/ContactSection";
 import AnnouncementsSection from "@/components/AnnouncementsSection";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+
 import StudentInfoPopup from "@/components/StudentInfoPopup";
 import ToppersSection from "@/components/ToppersSection";
 import AnimatedSection from "@/components/AnimatedSection";
+
+import StudentInquiryPopup from "@/components/StudentInquiryPopup";
+
 
 const Index = () => (
   <>
@@ -44,6 +48,7 @@ const Index = () => (
     </AnimatedSection>
     <Footer />
     <WhatsAppButton />
+    <StudentInquiryPopup />
   </>
 );
 

@@ -25,6 +25,17 @@
 
   <body>
     <div id="root"></div>
+
+    <!-- Hidden Netlify Forms detection -->
+    <form name="student-inquiry" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="text" name="studentName" />
+      <input type="text" name="studentAge" />
+      <input type="text" name="gradeApplying" />
+      <input type="text" name="parentName" />
+      <input type="email" name="parentEmail" />
+      <input type="tel" name="parentPhone" />
+    </form>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
