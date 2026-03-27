@@ -83,7 +83,7 @@ const Attendance = () => {
         const days: { day: number; status: string }[] = [];
         let present = 0, absent = 0, holiday = 0, total = 0;
         for (let d = 1; d <= 31; d++) {
-          const key = String(d).padStart(2, "0");
+          const key = String(d);
           const val = (row[key] || "").toString().trim().toUpperCase();
           if (val === "P" || val === "A" || val === "H") {
             days.push({ day: d, status: val });
@@ -264,7 +264,7 @@ const Attendance = () => {
                           className={`flex items-center gap-1 px-2 py-1.5 rounded-md border text-xs font-medium ${getStatusBadge(d.status)}`}
                         >
                           {getStatusIcon(d.status)}
-                          <span>{String(d.day).padStart(2, "0")}</span>
+                          <span>{String(d.day)}</span>
                           <span className="text-[10px] opacity-70">{statusLabel[d.status] || ""}</span>
                         </div>
                       ))}
