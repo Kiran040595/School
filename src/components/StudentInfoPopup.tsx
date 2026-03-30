@@ -9,6 +9,16 @@ import { GraduationCap } from "lucide-react";
 
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbykrBuCFBkSBaQdc_IIPlbvt77KKnwy8SJ01ICcrX9DDMMu3Eqe3WavYOX4drZAYt-wpA/exec";
 
+const formatInquiryTimestamp = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+};
+
 const StudentInfoPopup = () => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -45,11 +55,12 @@ const StudentInfoPopup = () => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
+      params.append("action", "studentInquiry");
       params.append("studentName", form.studentName);
       params.append("fatherName", form.fatherName);
       params.append("phone", form.phone);
       params.append("class", form.class);
-      params.append("timestamp", new Date().toISOString());
+      params.append("timestamp", formatInquiryTimestamp());
 
       await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
@@ -104,7 +115,7 @@ const StudentInfoPopup = () => {
             <Select value={form.class} onValueChange={(v) => handleChange("class", v)}>
               <SelectTrigger><SelectValue placeholder="Select class" /></SelectTrigger>
               <SelectContent>
-                {["Nursery", "LKG", "UKG", ...Array.from({ length: 12 }, (_, i) => `Class ${i + 1}`)].map((g) => (
+                {["PREKG", "LKG", "UKG", ...Array.from({ length: 12 }, (_, i) => `Class ${i + 1}`)].map((g) => (
                   <SelectItem key={g} value={g}>{g}</SelectItem>
                 ))}
               </SelectContent>
