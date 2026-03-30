@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbykrBuCFBkSBaQdc_IIPlbvt77KKnwy8SJ01ICcrX9DDMMu3Eqe3WavYOX4drZAYt-wpA/exec";
 
-const CLASSES = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+const CLASSES = ["PREKG", "LKG", "UKG", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 
 interface MonthRecord {
   Month: string;
@@ -25,17 +25,17 @@ interface MonthRecord {
 
 const getStatusIcon = (status: string) => {
   const s = status?.toUpperCase();
-  if (s === "P") return <CheckCircle2 size={14} className="text-green-600" />;
-  if (s === "A") return <XCircle size={14} className="text-red-600" />;
-  if (s === "H") return <Clock size={14} className="text-yellow-600" />;
+  if (s === "P") return <CheckCircle2 size={14} className="text-emerald-600" />;
+  if (s === "A") return <XCircle size={14} className="text-rose-600" />;
+  if (s === "H") return <Clock size={14} className="text-amber-600" />;
   return null;
 };
 
 const getStatusBadge = (status: string) => {
   const s = status?.toUpperCase();
-  if (s === "P") return "bg-green-100 text-green-700 border-green-200";
-  if (s === "A") return "bg-red-100 text-red-700 border-red-200";
-  if (s === "H") return "bg-yellow-100 text-yellow-700 border-yellow-200";
+  if (s === "P") return "bg-emerald-50 text-emerald-700 border-emerald-200";
+  if (s === "A") return "bg-rose-50 text-rose-700 border-rose-200";
+  if (s === "H") return "bg-amber-50 text-amber-700 border-amber-200";
   return "bg-muted text-muted-foreground";
 };
 
@@ -83,7 +83,7 @@ const Attendance = () => {
         const days: { day: number; status: string }[] = [];
         let present = 0, absent = 0, holiday = 0, total = 0;
         for (let d = 1; d <= 31; d++) {
-          const key = String(d).padStart(2, "0");
+          const key = String(d);
           const val = (row[key] || "").toString().trim().toUpperCase();
           if (val === "P" || val === "A" || val === "H") {
             days.push({ day: d, status: val });
@@ -199,21 +199,21 @@ const Attendance = () => {
                   <p className="text-sm text-muted-foreground">Working Days</p>
                 </CardContent>
               </Card>
-              <Card className="text-center border-green-200 bg-green-50/50">
+              <Card className="text-center border-emerald-200 bg-emerald-50/60 shadow-card">
                 <CardContent className="pt-6">
-                  <p className="text-3xl font-bold text-green-600">{overall.present}</p>
+                  <p className="text-3xl font-bold text-emerald-600">{overall.present}</p>
                   <p className="text-sm text-muted-foreground">Present</p>
                 </CardContent>
               </Card>
-              <Card className="text-center border-red-200 bg-red-50/50">
+              <Card className="text-center border-rose-200 bg-rose-50/60 shadow-card">
                 <CardContent className="pt-6">
-                  <p className="text-3xl font-bold text-red-600">{overall.absent}</p>
+                  <p className="text-3xl font-bold text-rose-600">{overall.absent}</p>
                   <p className="text-sm text-muted-foreground">Absent</p>
                 </CardContent>
               </Card>
-              <Card className="text-center border-blue-200 bg-blue-50/50">
+              <Card className="text-center border-sky-200 bg-sky-50/60 shadow-card">
                 <CardContent className="pt-6">
-                  <p className="text-3xl font-bold text-blue-600">{percentage}%</p>
+                  <p className="text-3xl font-bold text-sky-600">{percentage}%</p>
                   <p className="text-sm text-muted-foreground">Attendance %</p>
                 </CardContent>
               </Card>
@@ -224,13 +224,13 @@ const Attendance = () => {
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium text-foreground">Overall Attendance</span>
-                  <span className={`text-sm font-bold ${percentage >= 75 ? "text-green-600" : percentage >= 50 ? "text-yellow-600" : "text-red-600"}`}>
+                  <span className={`text-sm font-bold ${percentage >= 75 ? "text-emerald-600" : percentage >= 50 ? "text-amber-600" : "text-rose-600"}`}>
                     {percentage}%
                   </span>
                 </div>
                 <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
                   <div
-                    className={`h-full rounded-full transition-all duration-500 ${percentage >= 75 ? "bg-green-500" : percentage >= 50 ? "bg-yellow-500" : "bg-red-500"}`}
+                    className={`h-full rounded-full transition-all duration-500 ${percentage >= 75 ? "bg-emerald-500" : percentage >= 50 ? "bg-amber-500" : "bg-rose-500"}`}
                     style={{ width: `${percentage}%` }}
                   />
                 </div>
@@ -245,13 +245,13 @@ const Attendance = () => {
               const mWorkingDays = month.total - month.holiday;
               const mPct = mWorkingDays > 0 ? Math.round((month.present / mWorkingDays) * 100) : 0;
               return (
-                <Card key={`${month.Month}-${month.YY}`} className="overflow-hidden">
-                  <CardHeader className="bg-accent/50">
+                <Card key={`${month.Month}-${month.YY}`} className="overflow-hidden border-border/80 shadow-card">
+                  <CardHeader className="border-b bg-gradient-to-r from-slate-50 via-white to-sky-50/70">
                     <CardTitle className="flex items-center justify-between flex-wrap gap-2 text-lg">
                       <span className="flex items-center gap-2">
                         <CalendarDays size={18} /> {month.Month} {month.YY}
                       </span>
-                      <Badge variant="outline" className={mPct >= 75 ? "border-green-300 text-green-700" : "border-red-300 text-red-700"}>
+                      <Badge variant="outline" className={mPct >= 75 ? "border-emerald-300 bg-emerald-50 text-emerald-700" : "border-rose-300 bg-rose-50 text-rose-700"}>
                         {month.present}/{mWorkingDays} working days — {mPct}%
                       </Badge>
                     </CardTitle>
@@ -264,7 +264,7 @@ const Attendance = () => {
                           className={`flex items-center gap-1 px-2 py-1.5 rounded-md border text-xs font-medium ${getStatusBadge(d.status)}`}
                         >
                           {getStatusIcon(d.status)}
-                          <span>{String(d.day).padStart(2, "0")}</span>
+                          <span>{String(d.day)}</span>
                           <span className="text-[10px] opacity-70">{statusLabel[d.status] || ""}</span>
                         </div>
                       ))}
