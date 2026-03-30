@@ -13,6 +13,7 @@ const SHEET_ID = "1GVib7J0OISpTbW1ovyL_xSNX_NQPKS3Q6Zi6VsGOoFY";
   3. Adding students
   4. Saving attendance
   5. Posting notices
+  6. Saving student inquiries
 */
 function doPost(e) {
   try {
@@ -135,6 +136,36 @@ function doPost(e) {
         params.RollNumber || params.rollNumber || "",
         params.Class || params.class || "",
         new Date()
+      ]);
+
+      return jsonResponse({ success: true });
+    }
+
+    /*
+      Save student inquiry popup submissions.
+      This creates a StudentEnqury sheet if it does not exist.
+    */
+    if (params.action === "studentInquiry") {
+      var inquirySheetName = "StudentEnqury";
+      var inquirySheet = ss.getSheetByName(inquirySheetName);
+
+      if (!inquirySheet) {
+        inquirySheet = ss.insertSheet(inquirySheetName);
+        inquirySheet.appendRow([
+          "StudentName",
+          "FatherName",
+          "Phone",
+          "Class",
+          "Timestamp"
+        ]);
+      }
+
+      inquirySheet.appendRow([
+        params.studentName || "",
+        params.fatherName || "",
+        params.phone || "",
+        params.class || "",
+        params.timestamp || formatInquiryTimestamp()
       ]);
 
       return jsonResponse({ success: true });
@@ -416,6 +447,20 @@ function jsonResponse(data) {
   return ContentService
     .createTextOutput(JSON.stringify(data))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+/*
+  Build enquiry timestamp only up to minutes.
+  Example: 2026-03-30 08:31
+*/
+function formatInquiryTimestamp() {
+  var now = new Date();
+  var year = now.getFullYear();
+  var month = String(now.getMonth() + 1).padStart(2, "0");
+  var day = String(now.getDate()).padStart(2, "0");
+  var hours = String(now.getHours()).padStart(2, "0");
+  var minutes = String(now.getMinutes()).padStart(2, "0");
+  return year + "-" + month + "-" + day + " " + hours + ":" + minutes;
 }
 
 /*

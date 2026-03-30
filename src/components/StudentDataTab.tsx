@@ -18,10 +18,33 @@ import { RefreshCw, Users, GraduationCap, Search, Trash2 } from "lucide-react";
 
 const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbykrBuCFBkSBaQdc_IIPlbvt77KKnwy8SJ01ICcrX9DDMMu3Eqe3WavYOX4drZAYt-wpA/exec";
+const ENQUIRY_SHEET = "StudentEnqury";
 
 interface StudentRow {
   [key: string]: string | number;
 }
+
+const formatCellValue = (key: string, value: string | number) => {
+  if (typeof value !== "string") return String(value);
+
+  const normalizedKey = key.trim().toLowerCase();
+  const looksLikeTimestamp =
+    normalizedKey === "timestamp" &&
+    /^\d{4}-\d{2}-\d{2}t\d{2}:\d{2}/i.test(value);
+
+  if (!looksLikeTimestamp) return value;
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+};
 
 const CACHE_KEY = "studentDataCache";
 const CACHE_EXPIRY = 60 * 60 * 1000;
@@ -54,7 +77,7 @@ const StudentDataTab = () => {
   const fetchStudents = async () => {
     setLoading(true);
     try {
-      const res = await fetch(SCRIPT_URL);
+      const res = await fetch(`${SCRIPT_URL}?sheet=${encodeURIComponent(ENQUIRY_SHEET)}`);
       const data = await res.json();
       if (Array.isArray(data)) {
         setStudents(data);
@@ -76,12 +99,12 @@ const StudentDataTab = () => {
     setDeletingIndex(originalIndex);
     try {
       const formData = new URLSearchParams();
-      formData.append("sheet", "Sheet1");
+      formData.append("sheet", ENQUIRY_SHEET);
       formData.append("action", "delete");
       formData.append("row", String(originalIndex + 2));
 
       await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: formData });
-      toast({ title: "Student record deleted" });
+      toast({ title: "Enquiry record deleted" });
       setStudents((prev) => prev.filter((_, i) => i !== originalIndex));
       sessionStorage.removeItem(CACHE_KEY);
     } catch {
@@ -128,19 +151,19 @@ const StudentDataTab = () => {
 
   const headers = useMemo(() => {
     if (students.length === 0) return [];
-    return Object.keys(students[0]);
+    return Object.keys(students[0]).filter((key) => key !== "rowNumber");
   }, [students]);
 
   if (!loaded) {
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-4">
         <GraduationCap className="text-muted-foreground" size={48} />
-        <p className="text-muted-foreground">Click below to load student data</p>
+        <p className="text-muted-foreground">Click below to load enquiry data</p>
         <Button onClick={fetchStudents} disabled={loading}>
           {loading ? (
             <><RefreshCw size={16} className="mr-2 animate-spin" /> Loading...</>
           ) : (
-            <><Users size={16} className="mr-2" /> Load Student Data</>
+            <><Users size={16} className="mr-2" /> Load Enquiries</>
           )}
         </Button>
       </div>
@@ -157,7 +180,7 @@ const StudentDataTab = () => {
               <Users className="text-primary" size={20} />
             </div>
             <div>
-              <p className="text-xs text-muted-foreground">Total Students</p>
+              <p className="text-xs text-muted-foreground">Total Enquiries</p>
               <p className="text-2xl font-bold text-foreground">{students.length}</p>
             </div>
           </CardContent>
@@ -243,7 +266,7 @@ const StudentDataTab = () => {
                       <TableRow key={i}>
                         <TableCell className="text-muted-foreground">{i + 1}</TableCell>
                         {headers.map((h) => (
-                          <TableCell key={h}>{String(row[h] ?? "")}</TableCell>
+                          <TableCell key={h}>{formatCellValue(h, row[h] ?? "")}</TableCell>
                         ))}
                         <TableCell>
                           <AlertDialog>
@@ -263,10 +286,10 @@ const StudentDataTab = () => {
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                               <AlertDialogHeader>
-                                <AlertDialogTitle>Delete Student Record</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  Are you sure you want to delete this student record? This action cannot be undone.
-                                </AlertDialogDescription>
+                              <AlertDialogTitle>Delete Enquiry Record</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                  Are you sure you want to delete this enquiry record? This action cannot be undone.
+                              </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
