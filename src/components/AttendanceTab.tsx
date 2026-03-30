@@ -22,7 +22,7 @@ import { CalendarDays, Save, Loader2, RefreshCw, UserPlus } from "lucide-react";
 const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbykrBuCFBkSBaQdc_IIPlbvt77KKnwy8SJ01ICcrX9DDMMu3Eqe3WavYOX4drZAYt-wpA/exec";
 
-const CLASSES = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+const CLASSES = ["PREKG", "LKG", "UKG", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
@@ -94,7 +94,7 @@ const normalizeClassValue = (value: unknown) =>
 const parseStudentList = (rows: unknown, selectedClass: string): StudentInfo[] => {
   if (!Array.isArray(rows)) return [];
 
-  const normalizedSelectedClass = normalizeClassValue(selectedClass);
+  const normalizedSelectedClass = normalizeClassValue(selectedClass).toUpperCase();
   const uniqueStudents = new Map<string, StudentInfo>();
 
   rows.forEach((row) => {
@@ -126,7 +126,7 @@ const parseStudentList = (rows: unknown, selectedClass: string): StudentInfo[] =
           student["Student Class"] ||
           student["Class Name"] ||
           ""
-        ),
+        ).toUpperCase(),
       };
 
       if (!parsedStudent.StudentName || parsedStudent.Class !== normalizedSelectedClass) return;
@@ -250,27 +250,21 @@ const AttendanceTab = () => {
       let classStudents: StudentInfo[] = [];
 
       try {
-        const studentsUrl = `${SCRIPT_URL}?sheet=Class${encodeURIComponent(selectedClass)}`;
+        const studentsUrl = `${SCRIPT_URL}?sheet=Attendance_Class${encodeURIComponent(selectedClass)}`;
         const studentsRes = await fetch(studentsUrl);
         const studentsData = await studentsRes.json();
-        classStudents = parseStudentList(studentsData, selectedClass);
+        if (Array.isArray(studentsData)) {
+          classStudents = parseStudentList(studentsData, selectedClass);
+        }
       } catch {
         classStudents = [];
       }
 
       // No existing data — fetch student list from Sheet1 and create fresh attendance
-      if (false && classStudents.length === 0) {
-        const fallbackUrl = `${SCRIPT_URL}?sheet=Sheet1`;
-        const fallbackRes = await fetch(fallbackUrl);
-        const fallbackData = await fallbackRes.json();
-
-        classStudents = parseStudentList(fallbackData, selectedClass);
-      }
-
       if (classStudents.length === 0) {
         toast({
           title: `No students found for Class ${selectedClass}`,
-          description: `Check that sheet Class${selectedClass} exists and contains rows for this class.`,
+          description: `Check that Attendance_Class${selectedClass} contains saved student rows.`,
           variant: "destructive",
         });
         setAttendance([]);

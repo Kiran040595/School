@@ -4,13 +4,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
-import { Lock, ArrowLeft, GraduationCap, Megaphone, CalendarDays } from "lucide-react";
+import { Lock, ArrowLeft, GraduationCap, Megaphone, CalendarDays, FileSpreadsheet } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import NoticesForm from "@/components/NoticesForm";
 import StudentDataTab from "@/components/StudentDataTab";
 import AttendanceTab from "@/components/AttendanceTab";
+import ResultsTab from "@/components/ResultsTab";
 
 const HARDCODED_PASSWORD = "12345";
 
@@ -88,6 +89,9 @@ const StudentData = () => {
               <TabsTrigger value="notices" className="gap-2">
                 <Megaphone size={16} /> Post a Notice
               </TabsTrigger>
+              <TabsTrigger value="results" className="gap-2">
+                <FileSpreadsheet size={16} /> Results
+              </TabsTrigger>
               <TabsTrigger value="students" className="gap-2">
                 <GraduationCap size={16} /> Student Data
               </TabsTrigger>
@@ -98,6 +102,10 @@ const StudentData = () => {
 
             <TabsContent value="notices">
               <NoticesForm />
+            </TabsContent>
+
+            <TabsContent value="results">
+              <ResultsTab />
             </TabsContent>
 
             <TabsContent value="students">

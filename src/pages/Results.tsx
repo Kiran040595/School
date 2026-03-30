@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 const SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbykrBuCFBkSBaQdc_IIPlbvt77KKnwy8SJ01ICcrX9DDMMu3Eqe3WavYOX4drZAYt-wpA/exec";
 
-const CLASSES = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+const CLASSES = ["PREKG", "LKG", "UKG", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 
 const SUBJECTS = ["Telugu", "Hindi", "English", "Maths", "Science", "Social"] as const;
 
@@ -33,10 +33,10 @@ interface ResultRow {
 
 const getGradeColor = (grade: string) => {
   switch (grade?.toUpperCase()) {
-    case "A+": case "A": return "text-green-600 bg-green-50 border-green-200";
-    case "B+": case "B": return "text-blue-600 bg-blue-50 border-blue-200";
-    case "C+": case "C": return "text-yellow-600 bg-yellow-50 border-yellow-200";
-    default: return "text-red-600 bg-red-50 border-red-200";
+    case "A+": case "A": return "text-emerald-700 bg-emerald-50 border-emerald-200";
+    case "B+": case "B": return "text-sky-700 bg-sky-50 border-sky-200";
+    case "C+": case "C": return "text-amber-700 bg-amber-50 border-amber-200";
+    default: return "text-rose-700 bg-rose-50 border-rose-200";
   }
 };
 
@@ -153,8 +153,8 @@ const Results = () => {
             </div>
 
             {results.map((r, idx) => (
-              <Card key={idx} className="overflow-hidden">
-                <CardHeader className="bg-accent/50">
+              <Card key={idx} className="overflow-hidden border-border/80 shadow-card">
+                <CardHeader className="border-b bg-gradient-to-r from-slate-50 via-white to-emerald-50/70">
                   <CardTitle className="flex items-center justify-between flex-wrap gap-2">
                     <span className="flex items-center gap-2">
                       <BookOpen size={18} /> {r.ExamType || "Exam"}
