@@ -14,9 +14,6 @@ import StudentInfoPopup from "@/components/StudentInfoPopup";
 import ToppersSection from "@/components/ToppersSection";
 import AnimatedSection from "@/components/AnimatedSection";
 
-import StudentInquiryPopup from "@/components/StudentInquiryPopup";
-
-
 const Index = () => (
   <>
     <StudentInfoPopup />
@@ -48,7 +45,6 @@ const Index = () => (
     </AnimatedSection>
     <Footer />
     <WhatsAppButton />
-    <StudentInquiryPopup />
   </>
 );
 
