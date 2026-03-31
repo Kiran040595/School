@@ -20,6 +20,11 @@ const AboutSection = () => (
           for success in higher education and beyond. Our dedicated faculty and state-of-the-art facilities
           create an environment where every student can thrive.
         </p>
+        <p className="mt-4 text-muted-foreground max-w-3xl mx-auto">
+          As a leading CBSE-focused school in Vizag, we welcome families from Visakhapatnam, MVP Colony,
+          Seethammadhara, and nearby neighborhoods who are looking for strong academics, values-based
+          learning, and a supportive campus environment.
+        </p>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
