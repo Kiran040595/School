@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
+import LocalSeoSection from "@/components/LocalSeoSection";
 import SyllabusSection from "@/components/SyllabusSection";
 import FacultySection from "@/components/FacultySection";
 import GallerySection from "@/components/GallerySection";
@@ -21,6 +22,9 @@ const Index = () => (
     <HeroSection />
     <AnimatedSection>
       <AboutSection />
+    </AnimatedSection>
+    <AnimatedSection delay={0.05}>
+      <LocalSeoSection />
     </AnimatedSection>
     <AnimatedSection delay={0.1}>
       <ToppersSection />
